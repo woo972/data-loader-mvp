@@ -1,0 +1,16 @@
+@startuml
+interface DataReader {
+    read(DataSource)
+}
+interface DataWriter {
+    write()
+}
+class CsvDataReader {
+    read(DataSource)
+}
+
+class DataSource {
+    String dataPath
+    String dataType
+}
+@enduml
