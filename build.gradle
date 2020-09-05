@@ -45,4 +45,5 @@ dependencies {
     testCompile('org.spockframework:spock-core:1.1-groovy-2.4-rc-2')
 
     compile('com.opencsv:opencsv:5.2')
+    compile('net.e175.klaus:solarpositioning:0.0.9')
 }

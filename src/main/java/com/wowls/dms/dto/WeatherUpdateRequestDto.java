@@ -3,6 +3,7 @@ package com.wowls.dms.dto;
 import lombok.Builder;
 import lombok.Getter;
 
+// 미사용
 @Getter
 @Builder
 public class WeatherUpdateRequestDto {

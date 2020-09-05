@@ -1,4 +1,4 @@
-package com.wowls.repository;
+package com.wowls.dms.repository;
 
 import com.wowls.dms.domain.Weather;
 import org.springframework.data.jpa.repository.JpaRepository;

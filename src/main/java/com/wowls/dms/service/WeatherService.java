@@ -2,7 +2,7 @@ package com.wowls.dms.service;
 
 import com.wowls.dms.domain.Weather;
 import com.wowls.dms.dto.WeatherUpdateRequestDto;
-import com.wowls.repository.WeatherRepository;
+import com.wowls.dms.repository.WeatherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
@@ -25,11 +25,16 @@ public class WeatherService {
     @Transactional
     public void update(List<WeatherUpdateRequestDto> weatherUpdateRequestDtoList){
         // 하나씩 불러와서 처리하면 connection을 계속 맺고 끊고...?
-        List<Weather> weatherList = Collections.emptyList();
-        for(WeatherUpdateRequestDto weatherUpdateRequestDto : weatherUpdateRequestDtoList){
-            Weather weather = weatherRepository.findById(weatherUpdateRequestDto.getId())
-                    .orElseThrow(() -> new IllegalArgumentException("no object with that id exist"));
-            weather.update(weatherUpdateRequestDto);
-        }
+//        List<Weather> weatherList = Collections.emptyList();
+//        for(WeatherUpdateRequestDto weatherUpdateRequestDto : weatherUpdateRequestDtoList){
+//            Weather weather = weatherRepository.findById(weatherUpdateRequestDto.getId())
+//                    .orElseThrow(() -> new IllegalArgumentException("no object with that id exist"));
+//        }
+    }
+
+    // TODO: bulk로 로딩해야하기 때문에 Spring Data JDBC를 써야함
+    @Transactional
+    public void save(List<Weather> weatherList){
+        weatherRepository.saveAll(weatherList);
     }
 }
