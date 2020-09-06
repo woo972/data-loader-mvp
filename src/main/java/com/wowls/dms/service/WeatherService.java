@@ -1,12 +1,12 @@
 package com.wowls.dms.service;
 
-import com.wowls.dms.domain.Weather;
+import com.wowls.dms.entity.Weather;
 import com.wowls.dms.dto.WeatherUpdateRequestDto;
+import com.wowls.dms.provider.WeatherDataProvider;
 import com.wowls.dms.repository.WeatherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -20,6 +20,7 @@ import java.util.List;
 @Service
 public class WeatherService {
 
+    private WeatherDataProvider weatherDataProvider;
     private WeatherRepository weatherRepository;
 
     @Transactional
@@ -34,7 +35,8 @@ public class WeatherService {
 
     // TODO: bulk로 로딩해야하기 때문에 Spring Data JDBC를 써야함
     @Transactional
-    public void save(List<Weather> weatherList){
+    public void save(){
+        List<Weather> weatherList = weatherDataProvider.getCurrentWeatherData();
         weatherRepository.saveAll(weatherList);
     }
 }

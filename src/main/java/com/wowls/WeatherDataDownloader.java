@@ -4,9 +4,6 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -99,10 +96,12 @@ public class WeatherDataDownloader {
 //            String jdbcUrl = "jdbc:mysql://localhost:3306/mydb";
 //            String user = "root";
 //            String pw = "root";
+//            String sql = "insert into mydb values(?,?,?,?,?,?,?,?)";
 //            try {
 //                Class.forName(driver);
 //                con = DriverManager.getConnection(jdbcUrl, user, pw);
 //                System.out.println("[Database 연결 성공]");
+//
 //            } catch (SQLException e) {
 //                System.out.println("[SQL Error : " + e.getMessage() + "]");
 //            } catch (ClassNotFoundException e1) {

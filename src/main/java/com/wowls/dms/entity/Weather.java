@@ -1,4 +1,4 @@
-package com.wowls.dms.domain;
+package com.wowls.dms.entity;
 
 import lombok.Builder;
 import lombok.Getter;

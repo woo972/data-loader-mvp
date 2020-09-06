@@ -2,9 +2,8 @@ package com.wowls.dms.dto;
 
 import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvDate;
-import com.wowls.dms.domain.Weather;
 import lombok.Builder;
-import java.time.LocalDateTime;
+
 import java.util.Date;
 
 /**

@@ -1,15 +1,13 @@
 package com.wowls.dms.provider.parser;
 
+import com.wowls.dms.dto.GpsLocationDto;
+import com.wowls.dms.dto.GridLocationDto;
 import org.springframework.stereotype.Component;
 
-// 미사용
 @Component
 public class LocationParser {
 
-    public static int TO_GRID = 0;
-    public static int TO_GPS = 1;
-
-    private Point convertGRID_GPS(int mode, double lat, double lng) {
+    public GridLocationDto convertGpsToGrid(GpsLocationDto gpsLocationDto) {
         double RE = 6371.00877; // 지구 반경(km)
         double GRID = 5.0; // 격자 간격(km)
         double SLAT1 = 30.0; // 투영 위도1(degree)
@@ -40,45 +38,21 @@ public class LocationParser {
         ro = re * sf / Math.pow(ro, sn);
         Point rs = new Point();
 
-        if (mode == TO_GRID) {
-            rs.lat = lat;
-            rs.lng = lng;
-            double ra = Math.tan(Math.PI * 0.25 + (lat) * DEGRAD * 0.5);
-            ra = re * sf / Math.pow(ra, sn);
-            double theta = lng * DEGRAD - olon;
-            if (theta > Math.PI) theta -= 2.0 * Math.PI;
-            if (theta < -Math.PI) theta += 2.0 * Math.PI;
-            theta *= sn;
-            rs.x = Math.floor(ra * Math.sin(theta) + XO + 0.5);
-            rs.y = Math.floor(ro - ra * Math.cos(theta) + YO + 0.5);
-        } else {
-            rs.x = lat;
-            rs.y = lng;
-            double xn = lat - XO;
-            double yn = ro - lng + YO;
-            double ra = Math.sqrt(xn * xn + yn * yn);
-            if (sn < 0.0) {
-                ra = -ra;
-            }
-            double alat = Math.pow((re * sf / ra), (1.0 / sn));
-            alat = 2.0 * Math.atan(alat) - Math.PI * 0.5;
+        double lat = gpsLocationDto.getLatitude();
+        double lng = gpsLocationDto.getLongitude();
 
-            double theta = 0.0;
-            if (Math.abs(xn) <= 0.0) {
-                theta = 0.0;
-            } else {
-                if (Math.abs(yn) <= 0.0) {
-                    theta = Math.PI * 0.5;
-                    if (xn < 0.0) {
-                        theta = -theta;
-                    }
-                } else theta = Math.atan2(xn, yn);
-            }
-            double alon = theta / sn + olon;
-            rs.lat = alat * RADDEG;
-            rs.lng = alon * RADDEG;
-        }
-        return rs;
+        rs.lat = lat;
+        rs.lng = lng;
+        double ra = Math.tan(Math.PI * 0.25 + (lat) * DEGRAD * 0.5);
+        ra = re * sf / Math.pow(ra, sn);
+        double theta = lng * DEGRAD - olon;
+        if (theta > Math.PI) theta -= 2.0 * Math.PI;
+        if (theta < -Math.PI) theta += 2.0 * Math.PI;
+        theta *= sn;
+        rs.x = Math.floor(ra * Math.sin(theta) + XO + 0.5);
+        rs.y = Math.floor(ro - ra * Math.cos(theta) + YO + 0.5);
+
+        return GridLocationDto.builder().x(rs.x).y(rs.y).build();
     }
 
     private class Point {
