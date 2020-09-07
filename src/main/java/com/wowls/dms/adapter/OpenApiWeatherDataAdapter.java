@@ -7,7 +7,6 @@ import com.wowls.dms.entity.Weather;
 import com.wowls.dms.provider.parser.LocationParser;
 import com.wowls.dms.provider.parser.WeatherDataParser;
 import org.springframework.stereotype.Component;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -51,7 +50,9 @@ public class OpenApiWeatherDataAdapter {
             BufferedReader rd = null;
             StringBuilder sb = new StringBuilder();
             try {
-                URL url = new URL(urlBuilder.toString()+"&nx="+gridLocationDto.getX()+"&ny="+gridLocationDto.getY());
+                String x = String.valueOf(gridLocationDto.getNx());
+                String y = String.valueOf(gridLocationDto.getNy());
+                URL url = new URL(urlBuilder.toString()+"&nx="+x+"&ny="+y);
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-type", "application/json");
                 conn.setRequestMethod("GET");

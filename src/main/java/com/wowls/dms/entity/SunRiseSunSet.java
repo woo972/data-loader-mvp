@@ -10,8 +10,7 @@ import javax.persistence.Id;
 import java.util.Date;
 
 @Getter
-@NoArgsConstructor
-@Builder
+ @Builder
 @Entity
 public class SunRiseSunSet {
     @Id

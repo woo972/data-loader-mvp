@@ -52,7 +52,7 @@ public class LocationParser {
         rs.x = Math.floor(ra * Math.sin(theta) + XO + 0.5);
         rs.y = Math.floor(ro - ra * Math.cos(theta) + YO + 0.5);
 
-        return GridLocationDto.builder().x(rs.x).y(rs.y).build();
+        return GridLocationDto.builder().nx(rs.x).ny(rs.y).build();
     }
 
     private class Point {

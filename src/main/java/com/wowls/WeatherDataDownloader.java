@@ -4,6 +4,10 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +23,7 @@ public class WeatherDataDownloader {
 
     public static void main (String[] args) throws IOException {
 //    public static void mainMethod() throws IOException {
-        // 경일대, 대구 알파시티, 울산 이예로(울산 북부순환도로), 대구 KIAPI, 서울 상암(월드컵경기장), 성남 판교(판교역), 화성 KATRI, 경기 안양(안양시청)
+        // 경일대, 대구 알파시티, 울산 이예로(울산 북부순환도로), 대구 KIAPI, 서울 상암(월드컵경기장), 성남 판교(판교역), 화성 KATRI, 경기 안양(안양시청) -> 벤처밸리
         List<Point> experimentLocationList = new ArrayList<>();
         experimentLocationList.add(convertGRID_GPS(TO_GRID, 35.908583, 128.801170));
         experimentLocationList.add(convertGRID_GPS(TO_GRID, 35.858504, 128.630544));
@@ -89,6 +93,10 @@ public class WeatherDataDownloader {
             }
 
             /**
+             * json을 파싱한다
+             */
+
+            /**
              * DB에 연결하여 데이터를 입력한다
              */
 //            Connection con = null;
@@ -96,12 +104,17 @@ public class WeatherDataDownloader {
 //            String jdbcUrl = "jdbc:mysql://localhost:3306/mydb";
 //            String user = "root";
 //            String pw = "root";
-//            String sql = "insert into mydb values(?,?,?,?,?,?,?,?)";
+//            String sql = "insert into mydb(weather) values(json_object(?))";
+//            PreparedStatement ps = null;
 //            try {
 //                Class.forName(driver);
 //                con = DriverManager.getConnection(jdbcUrl, user, pw);
 //                System.out.println("[Database 연결 성공]");
+//                ps = con.prepareStatement(sql);
+////                ps.setString();
+//                ps.executeUpdate();
 //
+//                System.out.println("[sql 수행 성공]");
 //            } catch (SQLException e) {
 //                System.out.println("[SQL Error : " + e.getMessage() + "]");
 //            } catch (ClassNotFoundException e1) {
@@ -109,6 +122,7 @@ public class WeatherDataDownloader {
 //            } finally {
 //                if (con != null) {
 //                    try {
+//                        ps.close();
 //                        con.close();
 //                    } catch (Exception e) {
 //
