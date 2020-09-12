@@ -16,7 +16,7 @@ import java.util.Date;
  *      VEC	풍향	0	10
  *      WSD	풍속	1	10
  *
- *      - 하늘상태(SKY) 코드 : 맑음(1), 구름많음(3), 흐림(4)    * 구름조금(2) 삭제 (2019.06.4)
+ *      - 하늘상태(SKY) 코드 : 맑음(1), 구름많음(3), 흐림(4)
  *      - 강수형태(PTY) 코드 : 없음(0), 비(1), 비/눈(2), 눈(3), 소나기(4), 빗방울(5), 빗방울/눈날림(6), 눈날림(7)
  *                           여기서 비/눈은 비와 눈이 섞여 오는 것을 의미 (진눈개비)
  * 동서바람성분(UUU) : 동(+표기), 서(-표기)
@@ -29,7 +29,8 @@ public class Weather {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Date date;
+    private Date date; // api를 가져오는 시간이 아닌 기준시간으로 입력할 것 TZ표현법?
+    private int locationCode;
     private int SKY; // 추후 추가
     private int PTY;
     private float T1H;

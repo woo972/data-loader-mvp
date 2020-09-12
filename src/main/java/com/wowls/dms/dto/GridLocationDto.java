@@ -1,11 +1,13 @@
 package com.wowls.dms.dto;
 
+
 import lombok.Builder;
 import lombok.Getter;
 
-@Getter
 @Builder
+@Getter
 public class GridLocationDto {
-    private double x;
-    private double y;
+    private double nx;
+    private double ny;
 }
+
