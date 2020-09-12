@@ -24,7 +24,6 @@ import java.util.Date;
  */
 @Builder
 @Getter
-@NoArgsConstructor
 @Entity
 public class Weather {
     @Id
