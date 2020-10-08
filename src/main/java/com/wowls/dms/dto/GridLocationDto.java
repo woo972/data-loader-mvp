@@ -6,7 +6,9 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class GridLocationDto {
+public class
+
+GridLocationDto {
     private double nx;
     private double ny;
 }

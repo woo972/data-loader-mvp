@@ -1,0 +1,93 @@
+{{>layout/header}}
+
+
+<section class="section is-gray-lighter">
+    <div class="container">
+        <div class="tile is-ancestor is-vertical">
+            <!-- 검색 영역 -->
+            <div class="columns">
+                <div class="column">
+                    날짜:
+                    <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
+                        <input type="text" id="datepicker-input" aria-label="Date-Time">
+                        <span class="tui-ico-date"></span>
+                    </div>
+                    <div id="wrapper" style="margin-top: -1px;"></div>
+                </div>
+                <div class="column">
+                    시간:
+                    <div class="select is-small">
+                        <select id="time">
+                            <option value="0000">00:00</option>
+                            <option value="0100">01:00</option>
+                            <option value="0200">02:00</option>
+                            <option value="0300">03:00</option>
+                            <option value="0400">04:00</option>
+                            <option value="0500">05:00</option>
+                            <option value="0600">06:00</option>
+                            <option value="0700">07:00</option>
+                            <option value="0800">08:00</option>
+                            <option value="0900">09:00</option>
+                            <option value="1000">10:00</option>
+                            <option value="1100">11:00</option>
+                            <option value="1200">12:00</option>
+                            <option value="1300">13:00</option>
+                            <option value="1400">14:00</option>
+                            <option value="1500">15:00</option>
+                            <option value="1600">16:00</option>
+                            <option value="1700">17:00</option>
+                            <option value="1800">18:00</option>
+                            <option value="1900">19:00</option>
+                            <option value="2000">20:00</option>
+                            <option value="2100">21:00</option>
+                            <option value="2200">22:00</option>
+                            <option value="2300">23:00</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="column">
+                    장소:
+                    <div class="select is-small">
+                        <select id="location-code">
+                            <option value="1">1:경일대</option>
+                            <option value="2">2:울산 이예로</option>
+                            <option value="3">3:대구 알파시티</option>
+                            <option value="4">4:대구 KIAPI</option>
+                            <option value="5">5:서울 상암</option>
+                            <option value="6">6:경기 판교</option>
+                            <option value="7">7:화성 KATRI</option>
+                            <option value="8">8:안양 벤처밸리</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="buttons">
+                        <button class="button is-primary is-small" id="btn-search">Search</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 목록 출력 영역 -->
+            <table class="table is-bordered">
+                <thead>
+                    <tr>
+                        <th>날짜/시간</th>
+                        <th>하늘상태</th>
+                        <th>온도</th>
+                        <th>습도</th>
+                        <th>강수형태</th>
+                        <th>강수량</th>
+                        <th>풍속</th>
+                        <th>풍향</th>
+                        <th>동서바람성분</th>
+                        <th>남북바람성분</th>
+                        <th>낙뢰확률</th>
+                    </tr>
+                </thead>
+                <tbody id="weather-table"></tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+{{>layout/footer}}

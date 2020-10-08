@@ -4,6 +4,7 @@ import com.wowls.dms.dto.GpsLocationDto;
 import com.wowls.dms.dto.GridLocationDto;
 import org.springframework.stereotype.Component;
 
+// 미사용
 @Component
 public class LocationParser {
 

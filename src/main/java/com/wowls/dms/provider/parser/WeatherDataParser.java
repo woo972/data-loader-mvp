@@ -5,7 +5,7 @@ import com.wowls.dms.entity.Weather;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-
+// 미사용
 // TODO: parser 범용으로 따로 빼기
 @Component
 public class WeatherDataParser {
