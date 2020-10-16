@@ -21,11 +21,5 @@ public class WeatherRequestDto {
     private String startTime;
     private String endTime;
     private String locationCode;
-    private String startDateTime;
-    private String endDateTime;
-
-    public String getStartDateTime(){
-        return this.startDate + this.startTime;
-    }
 }
 

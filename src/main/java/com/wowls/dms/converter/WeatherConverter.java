@@ -22,12 +22,14 @@ public class WeatherConverter{
         return new WeatherResponseDto();
     }
 
-    public WeatherResponseDto convertWeatherToPojo(Weather weather) {
+    // 추후 일반화
+    public WeatherResponseDto convertWeatherToWeatherResponseDto(Weather weather) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             WeatherResponseDto weatherResponseDto
                     = objectMapper.readValue(weather.getWeatherData(), WeatherResponseDto.class);
             weatherResponseDto.setWeatherId(weather.getWeatherId());
+            return weatherResponseDto;
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -15,9 +15,9 @@ public class WeatherJdbc {
         String user = "d2x";
         String pw = "elxndprtm0-";
         // 5.7.9 이상에서만 작동
-        String sql = "SELECT weather_id, weather_data FROM weather"
-                + " WHERE weather_data->\"$.date\" = '"+weatherRequestDto.getStartDateTime()+"'"
-                + " and weather_data->\"$.location_code\" = '"+weatherRequestDto.getLocationCode()+"'";
+//        String sql = "SELECT weather_id, weather_data FROM weather"
+//                + " WHERE weather_data->\"$.date\" = '"+weatherRequestDto.getStartDateTime()+"'"
+//                + " and weather_data->\"$.location_code\" = '"+weatherRequestDto.getLocationCode()+"'";
 //        String sql = "SELECT weather_id, weather_data FROM weather"
 //                + " WHERE JSON_EXTRACT(weather_data,\"$.date\") = '"+weatherRequestDto.getStartDateTime()+"'"
 //                + " and JSON_EXTRACT(weather_data,\"$.location_code\") = '"+weatherRequestDto.getLocationCode()+"'";
@@ -27,7 +27,7 @@ public class WeatherJdbc {
         try {
             Class.forName(driver);
             con = DriverManager.getConnection(jdbcUrl, user, pw);
-            ps = con.prepareStatement(sql);
+//            ps = con.prepareStatement(sql);
 //            ps.setString(1, weatherRequestDto.getStartDateTime());
 //            ps.setString(1, weatherRequestDto.getLocationCode());
             rs = ps.executeQuery();

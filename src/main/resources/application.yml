@@ -1,7 +1,7 @@
 spring:
   profiles:
-    active: mysql
-#    include: prod
+#    active: mysql
+    include: prod
   jpa:
     show_sql: true
     properties:
@@ -15,9 +15,6 @@ spring:
   server:
     tomcat:
       uri-encoding: UTF-8
-#mybatis:
-#  config-location: classpath:mybatis-config.xml
-
 ---
 spring:
   profiles: h2

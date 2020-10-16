@@ -6,6 +6,11 @@ import com.wowls.dms.entity.Weather;
 import com.wowls.dms.service.WeatherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -13,15 +18,19 @@ import org.springframework.web.bind.annotation.*;
 public class WeatherController {
     private final WeatherService weatherService;
 
-    @PostMapping("/api/v1/weather")
-    public WeatherResponseDto getWeather(@RequestBody WeatherRequestDto weatherRequestDto,
-                                         @RequestParam(required = false, value = "pageChunck") int pageChunk,
-                                         @RequestParam(required = false, value = "currentPage") int currentPage){
-        return weatherService.getWeather(weatherRequestDto, pageChunk, currentPage);
-    }
-
-//    @GetMapping("/api/v1/weatherList")
-//    public Page<Weather> getWeatherList(){
-//        return weatherService.getWeatherList();
+//    @PostMapping("/api/v1/weather")
+//    public WeatherResponseDto getWeather(@RequestBody WeatherRequestDto weatherRequestDto){
+//        return weatherService.getWeather(weatherRequestDto);
 //    }
+
+    @PostMapping("/api/v1/weather")
+    public Page<WeatherResponseDto> getWeather(@RequestBody WeatherRequestDto weatherRequestDto,
+                                               @PageableDefault (page = 0, size = 5)
+//                                               @SortDefault.SortDefaults({
+//                                                       @SortDefault(sort = "date", direction = Sort.Direction.ASC),
+//                                                       @SortDefault(sort = "location", direction = Sort.Direction.ASC)
+//                                               })
+                                                       Pageable pageable){
+        return weatherService.getWeather(weatherRequestDto, pageable);
+    }
 }

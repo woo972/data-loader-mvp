@@ -5,36 +5,37 @@ import com.wowls.dms.dto.WeatherRequestDto;
 import com.wowls.dms.dto.WeatherResponseDto;
 import com.wowls.dms.entity.Weather;
 import com.wowls.dms.dto.WeatherUpdateRequestDto;
-//import com.wowls.dms.provider.WeatherDataProvider;
-import com.wowls.dms.mapper.WeatherMapper;
-import com.wowls.dms.repository.WeatherJdbc;
 import com.wowls.dms.repository.WeatherRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
+import lombok.RequiredArgsConstructor;
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class WeatherService {
 
-//    private final WeatherDataProvider weatherDataProvider;
     private final WeatherRepository weatherRepository;
     private final WeatherConverter weatherConverter;
-//    private final WeatherMapper weatherMapper;
-//    private final WeatherJdbc weatherJdbc;
 
-    public WeatherResponseDto getWeather(WeatherRequestDto weatherRequestDto,
-                                         int pageChunk, int currentPage) {
-
-        Weather weather = weatherRepository
-                .findByDateAndLocationCode(weatherRequestDto)
+    public Page<WeatherResponseDto> getWeather(WeatherRequestDto weatherRequestDto, Pageable pageable) {
+        Page<Weather> weatherPage = weatherRepository
+                .findByDateAndLocationCode(weatherRequestDto.getStartDate(),
+                                           weatherRequestDto.getEndDate(),
+                                           weatherRequestDto.getLocationCode(),
+                                            pageable)
                 .orElseThrow(() -> new IllegalArgumentException("no object with these parameter"));
-        return weatherConverter.convertWeatherToPojo(weather);
+        return new PageImpl<WeatherResponseDto>(weatherPage
+                                .getContent()
+                                .stream()
+                                .map(weatherConverter::convertWeatherToWeatherResponseDto)
+                                .collect(Collectors.toList()),
+                                pageable,
+                                weatherPage.getTotalElements());
     }
 
 //    public Page<Weather> getWeatherList() {

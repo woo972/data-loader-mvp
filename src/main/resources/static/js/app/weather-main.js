@@ -1,33 +1,51 @@
 var startDatePicker;
 var endDatePicker;
 var pageMeta = {
-    currentPage: 1,
-    lastPage: 1
+    displayLimit: 10,
+    paginationStartPage: 0,
+    currentPage: 0,
+    lastPage: 0
 };
 var main = {
     init : function () {
         var _this = this;
-        var startDatePicker = new tui.DatePicker('#wrapper', {
+        startDatePicker = new tui.DatePicker('#start-wrapper', {
             date: new Date(),
+            language: 'ko',
             input: {
               element: '#datepicker-start',
-              format: 'yyyy-MM-dd HH'
+              format: 'yyyy-MM-dd HH:00'
             },
-            timePicker: true
+            timePicker: {
+                defaultHour: 00,
+                defaultMinute: 00,
+                inputType: 'selectbox',
+                hourStep: 1,
+                minuteStep: 60,
+                showMeridiem: false
+            }
         });
-        var endDatePicker = new tui.DatePicker('#wrapper', {
+        endDatePicker = new tui.DatePicker('#end-wrapper', {
             date: new Date(),
+            language: 'ko',
             input: {
               element: '#datepicker-end',
-              format: 'yyyy-MM-dd HH'
+              format: 'yyyy-MM-dd HH:00'
             },
-            timePicker: true
+            timePicker: {
+                defaultHour: 23,
+                defaultMinute: 00,
+                inputType: 'selectbox',
+                hourStep: 1,
+                minuteStep: 60,
+                showMeridiem: false
+            }
         });
         $('#btn-search').on('click', function () {
             _this.search();
         });
         $('.pagination-link').on('click', function () {
-            _this.searchPage();
+            _this.searchPage($(this).data('page-number'));
         });
         $('.pagination-previous').on('click', function () {
             _this.searchPrevious();
@@ -53,61 +71,83 @@ var main = {
             data: JSON.stringify(requestDto)
         }).done(function(response) {
             // 테이블 데이터를 그린다
-            var resultSet='<tr>'
-            +'<td>'+response.date+'</td>'
-            +'<td>'+response.condition+'</td>'
-            +'<td>'+response.temperature+'</td>'
-            +'<td>'+response.humidity+'</td>'
-            +'<td>'+response.precipitation_type+'</td>'
-            +'<td>'+response.precipitation+'</td>'
-            +'<td>'+response.wind_speed+'</td>'
-            +'<td>'+response.wind_direction+'</td>'
-            +'<td>'+response.wind_component_ew+'</td>'
-            +'<td>'+response.wind_component_sn+'</td>'
-            +'<td>'+response.lightning+'</td>'
-            +'</tr>';
-            $('#weather-table').html(resultSet);
+            var tableData='';
+            if(response.content.length <= 0){
+                tableData='데이터 없음';
+            }else{
+                for(var idx = 0; idx < response.content.length; idx++){
+                    tableData+='<tr>'
+                        +'<td>'+response.content[idx].date+'</td>'
+                        +'<td>'+response.content[idx].condition+'</td>'
+                        +'<td>'+response.content[idx].temperature+'</td>'
+                        +'<td>'+response.content[idx].humidity+'</td>'
+                        +'<td>'+response.content[idx].precipitation_type+'</td>'
+                        +'<td>'+response.content[idx].precipitation+'</td>'
+                        +'<td>'+response.content[idx].wind_speed+'</td>'
+                        +'<td>'+response.content[idx].wind_direction+'</td>'
+                        +'<td>'+response.content[idx].wind_component_ew+'</td>'
+                        +'<td>'+response.content[idx].wind_component_sn+'</td>'
+                        +'<td>'+response.content[idx].lightning+'</td>'
+                        +'</tr>';
+                }
+            }
+            $('#weather-table').html(tableData);
 
             // 페이지 정보를 설정한다
-            pageMeta.currentPage = response.page_number;
+            pageMeta.currentPage = response.number;
+            pageMeta.lastPage = response.totalPages;
 
-            // 페이지네이션 처리를 한다
-            $('.pagination-previous').removeProp('disabled');
-            $('.pagination-next').removeProp('disabled');
-            $('.pagination-link').each(index, item){
-                item.removeAttr('is-current');
-            }
-            if(pageMeta.currentPage === 1){
+            // 페이지네이션 ui를 초기화한다
+            $('.pagination-link').each(function(index, item){
+                $(this).removeAttr('is-current');
+            });
+            if(pageMeta.currentPage <= pageMeta.displayLimit){
                 $('.pagination-previous').prop('disabled');
+            }else{
+                $('.pagination-previous').prop('disabled', false);
             }
-            if(pageMeta.currentPage === pageMeta.lastPage){
+            if(pageMeta.currentPage + pageMeta.displayLimit > pageMeta.lastPage){
                 $('.pagination-next').prop('disabled');
+            }else{
+                $('.pagination-next').prop('disabled', false);
             }
-            $('.pagination-link').each(index, item){
-                if(item.)
+
+            // 페이지네이션 ui를 그린다
+            var paginationData='';
+            var paginationLastIndex = Math.min(pageMeta.lastPage, pageMeta.displayLimit);
+            for(var index = 0; index < paginationLastIndex; index++){
+                var isCurrent = (pageMeta.paginationStartPage + index) === pageMeta.currentPage? 'is-current' : '';
+                paginationData+='<li>'
+                    +'<a class="pagination-link '
+                    +isCurrent
+                    +'" data-page-number="' + (pageMeta.paginationStartPage + index)
+                    +'" onclick="main.searchPage('+(pageMeta.paginationStartPage + index)+')">'
+                    + (pageMeta.paginationStartPage + index + 1) + '</a></li>';
             }
+            $('.pagination-list').html(paginationData);
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
     },
-    searchPage : function () {
-        var selectedPage = $(this).data('page-number');
+    searchPage : function (selectedPage) {
         if (selectedPage === pageMeta.currentPage) return;
-        _this.search(selectedPage);
+        this.search(selectedPage);
     },
     searchPrevious : function () {
-        if (pageMeta.currentPage <= 1) {
-            alert('첫 페이지입니다.');
+        if (pageMeta.currentPage < pageMeta.displayLimit) {
+            alert('첫 페이지 묶음입니다.');
             return;
         }
-        _this.search(pageMeta.currentPage - 1);
+        pageMeta.paginationStartPage = pageMeta.currentPage - pageMeta.displayLimit;
+        this.search(pageMeta.currentPage - pageMeta.displayLimit);
     },
     searchNext : function () {
-        if (pageMeta.currentPage >= pageMeta.lastPage) {
-            alert('마지막 페이지입니다.');
+        if (pageMeta.currentPage + pageMeta.displayLimit > pageMeta.lastPage) {
+            alert('마지막 페이지 묶음입니다.');
             return;
         }
-        _this.search(pageMeta.currentPage + 1);
+        pageMeta.paginationStartPage = pageMeta.currentPage + pageMeta.displayLimit;
+        this.search(pageMeta.currentPage + pageMeta.displayLimit);
     }
 };
 

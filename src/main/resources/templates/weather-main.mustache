@@ -7,22 +7,23 @@
             <!-- 검색 영역 -->
             <div class="columns">
                 <div class="column">
+                    <span>FROM</span>
                     <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
                         <input type="text" id="datepicker-start" aria-label="Date-Time">
                         <span class="tui-ico-date"></span>
                     </div>
-                    <div id="wrapper" style="margin-top: -1px;"></div>
+                    <div id="start-wrapper" style="margin-top: -1px;"></div>
                 </div>
                 <div class="column">
-                    ~
+                    <span>TO</span>
                     <div class="tui-datepicker-input tui-datetime-input tui-has-focus">
                         <input type="text" id="datepicker-end" aria-label="Date-Time">
                         <span class="tui-ico-date"></span>
                     </div>
-                    <div id="wrapper" style="margin-top: -1px;"></div>
+                    <div id="end-wrapper" style="margin-top: -1px;"></div>
                 </div>
                 <div class="column">
-                    장소:
+                    <span>장소</span>
                     <div class="select is-small">
                         <select id="location-code">
                             <option value="1">1:경일대</option>
@@ -67,13 +68,7 @@
             <nav class="pagination is-centered" role="navigation" aria-label="pagination">
                 <a class="pagination-previous">이전</a>
                 <a class="pagination-next">다음</a>
-                <ul class="pagination-list">
-                    <li><a class="pagination-link is-current" aria-label="Goto page" data-page-number="1">1</a></li>
-                    <li><a class="pagination-link" aria-label="Goto page" data-page-number="2">2</a></li>
-                    <li><a class="pagination-link" aria-label="Goto page" data-page-number="3">3</a></li>
-                    <li><a class="pagination-link" aria-label="Goto page" data-page-number="4">4</a></li>
-                    <li><a class="pagination-link" aria-label="Goto page" data-page-number="5">5</a></li>
-                </ul>
+                <ul class="pagination-list"></ul>
             </nav>
         </div>
     </div>
