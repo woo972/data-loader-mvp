@@ -1,5 +1,6 @@
 package com.wowls.dms.job;
 
+import com.wowls.dms.service.WeatherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -18,18 +19,18 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
-public class SimpleJobConfiguration {
-    private final JobBuilderFactory jobBuilderFactory; // 생성자 DI 받음
-    private final StepBuilderFactory stepBuilderFactory; // 생성자 DI 받음
+public class WeatherDataJobConfiguration {
+    private final JobBuilderFactory jobBuilderFactory;
+    private final StepBuilderFactory stepBuilderFactory;
+    private final WeatherService weatherService;
 
     /**
      * Batch Job 생성 (하나의 배치 단위)
      */
     @Bean
-    public Job simpleJob() {
-        return jobBuilderFactory.get("simpleJob")
-                .start(simpleStep1(null))
-                .next(simpleStep2(null))
+    public Job weatherDataJob() {
+        return jobBuilderFactory.get("weatherData")
+                .start(saveWeatherData(null))
                 .build();
     }
 
@@ -39,23 +40,12 @@ public class SimpleJobConfiguration {
      */
     @Bean
     @JobScope
-    public Step simpleStep1(@Value("#{jobParameters[requestDate]}") String requestData) {
-        return stepBuilderFactory.get("simpleStep1")
+    public Step saveWeatherData(@Value("#{jobParameters[requestDate]}") String requestData) {
+        return stepBuilderFactory.get("saveWeatherData")
                 .tasklet((contribution, chunkContext) -> {
                     log.info(">>>>> This is Step1");
                     log.info(">>>>> requestData: {}", requestData);
-                    return RepeatStatus.FINISHED;
-                })
-                .build();
-    }
-
-    @Bean
-    @JobScope
-    public Step simpleStep2(@Value("#{jobParameters[requestDate]}") String requestData) {
-        return stepBuilderFactory.get("simpleStep2")
-                .tasklet((contribution, chunkContext) -> {
-                    log.info(">>>>> This is Step2");
-                    log.info(">>>>> requestData: {}", requestData);
+                    weatherService.save();
                     return RepeatStatus.FINISHED;
                 })
                 .build();

@@ -4,11 +4,10 @@ import com.wowls.dms.dto.GpsLocationDto;
 import com.wowls.dms.dto.GridLocationDto;
 import org.springframework.stereotype.Component;
 
-// 미사용
 @Component
 public class LocationParser {
 
-    public GridLocationDto convertGpsToGrid(GpsLocationDto gpsLocationDto) {
+    public static GridLocationDto convertGpsToGrid(GpsLocationDto gpsLocationDto) {
         double RE = 6371.00877; // 지구 반경(km)
         double GRID = 5.0; // 격자 간격(km)
         double SLAT1 = 30.0; // 투영 위도1(degree)
@@ -56,7 +55,7 @@ public class LocationParser {
         return GridLocationDto.builder().nx(rs.x).ny(rs.y).build();
     }
 
-    private class Point {
+    private static class Point {
         public double lat;
         public double lng;
 

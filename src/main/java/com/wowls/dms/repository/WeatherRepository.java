@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 import java.util.Optional;
 
 public interface WeatherRepository extends JpaRepository<Weather, Long> {
@@ -23,6 +25,7 @@ public interface WeatherRepository extends JpaRepository<Weather, Long> {
                                                       @Param("end_date") String endDate,
                                                       @Param("location_code") String locationCode,
                                                       Pageable paging);
+
 //    MySQL
 //    @Query(value = "SELECT weather_id, weather_data FROM weather" +
 //            " WHERE weather_data->'$.date' >= :start_date" +

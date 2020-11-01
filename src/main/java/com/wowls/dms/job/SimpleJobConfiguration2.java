@@ -12,38 +12,30 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * @Configuration: Spring Batch의 모든 Job은 @Configuration으로 등록해서 사용
- */
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
-public class SimpleJobConfiguration {
+public class SimpleJobConfiguration2 {
     private final JobBuilderFactory jobBuilderFactory; // 생성자 DI 받음
     private final StepBuilderFactory stepBuilderFactory; // 생성자 DI 받음
 
     /**
-     * Batch Job 생성 (하나의 배치 단위)
+     * Job명을 다르게 지정해야함
      */
     @Bean
-    public Job simpleJob() {
-        return jobBuilderFactory.get("simpleJob")
-                .start(simpleStep1(null))
-                .next(simpleStep2(null))
+    public Job simpleJob2() {
+        return jobBuilderFactory.get("simpleJob2")
+                .start(step1())
+                .next(step2())
                 .build();
     }
 
-    /**
-     * Batch Step 생성
-     * tasklet: Step 안에서 수행될 기능 명시 (reader/processor/writer로 쓸 수도 있음)
-     */
     @Bean
     @JobScope
-    public Step simpleStep1(@Value("#{jobParameters[requestDate]}") String requestData) {
+    public Step step1() {
         return stepBuilderFactory.get("simpleStep1")
                 .tasklet((contribution, chunkContext) -> {
-                    log.info(">>>>> This is Step1");
-                    log.info(">>>>> requestData: {}", requestData);
+                    log.info(">>>>> This is new Step1");
                     return RepeatStatus.FINISHED;
                 })
                 .build();
@@ -51,11 +43,10 @@ public class SimpleJobConfiguration {
 
     @Bean
     @JobScope
-    public Step simpleStep2(@Value("#{jobParameters[requestDate]}") String requestData) {
+    public Step step2() {
         return stepBuilderFactory.get("simpleStep2")
                 .tasklet((contribution, chunkContext) -> {
-                    log.info(">>>>> This is Step2");
-                    log.info(">>>>> requestData: {}", requestData);
+                    log.info(">>>>> This is new Step2 ");
                     return RepeatStatus.FINISHED;
                 })
                 .build();

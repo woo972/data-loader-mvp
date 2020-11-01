@@ -82,11 +82,13 @@ public class WeatherDataDownloader {
     }
 
     private static void writeDb(String parsedJson) {
+        System.out.println("inininin");
+
         Connection con = null;
-        String driver = "com.mysql.jdbc.Driver";
-        String jdbcUrl = "jdbc:mysql://localhost:3306/addup?useSSL=true&verifyServerCertificate=false";
-        String user = "d2x";
-        String pw = "elxndprtm0-";
+        String driver = "org.mariadb.jdbc.Driver";
+        String jdbcUrl = "jdbc:mariadb://127.0.0.1:3306/addup";
+        String user = "root";
+        String pw = "root";
         String sql = "insert into weather (weather_data) values(?)";
         PreparedStatement ps = null;
         try {
